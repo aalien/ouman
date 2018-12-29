@@ -1,15 +1,14 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
-from ouman import Ouman
-import eh203
 import time
+from ouman import Ouman
 
-ouman = Ouman('/dev/ttyUSB0')
+ouman = Ouman('EH-203.xml')
+ouman.connect('/dev/ttyUSB0')
+
 try:
-    while True:
-        for name, i in eh203.SENSORS:
-            val = ouman.read(i)
-            print name, val
-        time.sleep(1)
+    for mp in ouman.measurepoints():
+        val = mp.read()
+        print('ouman %s=%.1f' % (mp.name, val))  # + mp.unit)
 finally:
     ouman.close()
